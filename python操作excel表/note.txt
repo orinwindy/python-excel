@@ -1,0 +1,78 @@
+先生成一个excel工作薄(book)，获得当前活动的工作表(sheet):
+        import xlwings as xw
+
+        app = xw.App(visible=True, add_book=False)
+        wb = app.books.add()
+        sht = wb.sheets.active
+        cell = sht.range('c3')
+
+
+xlwings设置excel单元格大小(行高与列宽)：
+"""设置单元格大小"""
+        sht.autofit()    # 自动调整单元格大小。
+        sht.range('a1:d5').column_width = 5    # 设置第1-4列的列宽。
+        sht.range(1,4).row_height = 20     # 设置第1行 行高。
+
+
+xlwings设置excel单元格字体(font)格式：
+"""设置单元格 字体格式"""
+        cell.color = 255,200,255         # 设置单元格的填充颜色
+        cell.api.Font.ColorIndex = 3     # 设置字体的颜色，具体颜色索引见下方。
+        cell.api.Font.Size = 24          # 设置字体的大小。
+        cell.api.Font.Bold = True        # 设置为粗体。
+        cell.api.NumberFormat = "0.00"     # 设置单元格的数字格式。
+
+
+xlwings设置excel单元格对齐方式：
+"""设置单元格的对齐方式"""
+        cell.api.HorizontalAlignment = -4108    # -4108 水平居中。 -4131 靠左，-4152 靠右。
+        cell.api.VerticalAlignment = -4130#自动换行      # -4108 垂直居中（默认）。
+        水平对齐 .HorizontalAlignment= -4108#水平居中对齐   -4131#水平靠左对齐   -4152#水平靠右对齐
+        垂直对齐 .VerticalAlignment= -4108# 垂直居中对齐  -4160垂直靠上对齐 -4107垂直靠下对齐
+
+
+xlwings设置excel单元格边框(border-linestyle)：
+"""设置边框"""
+        # Borders(9) 底部边框，LineStyle = 1 直线。
+        cell.api.Borders(9).LineStyle = 1
+        cell.api.Borders(9).Weight = 3       # 设置边框粗细。
+
+        # Borders(7) 左边框，LineStyle = 2 虚线。
+        cell.api.Borders(7).LineStyle = 2
+        cell.api.Borders(7).Weight = 3
+
+        # Borders(8) 顶部框，LineStyle = 5 双点划线。
+        cell.api.Borders(8).LineStyle = 5
+        cell.api.Borders(8).Weight = 3
+
+        # Borders(10) 右边框，LineStyle = 4 点划线。
+        cell.api.Borders(10).LineStyle = 4
+        cell.api.Borders(10).Weight = 3
+
+        # Borders(5) 单元格内从左上角 到 右下角。
+        cell.api.Borders(5).LineStyle = 1
+        cell.api.Borders(5).Weight = 3
+
+        # Borders(6) 单元格内从左下角 到 右上角。
+        cell.api.Borders(6).LineStyle = 1
+        cell.api.Borders(6).Weight = 3
+
+
+如果选择的是一个区域(range),区域内部边框设置如下：
+"""如果是一个区域的单元格，内部边框设置如下"""
+        # # Borders(11) 内部垂直边线。
+        rng.api.Borders(11).LineStyle = 1
+        rng.api.Borders(11).Weight = 3
+        # # Borders(12) 内部水平边线。
+        rng.api.Borders(12).LineStyle = 1
+        rng.api.Borders(12).Weight = 3
+
+xlwings合并(merge)拆分(unmerge)单元格：
+"""合并拆分单元格"""
+        sht.range('C8:D8').api.merge()      # 合并单元格 C8 到 D8
+        sht.range('C8:D8').api.unmerge()    # 拆分单元格
+
+
+数据格式更改
+        rng.number_format='m/d'#将区域数据全部改为“/月/日”
+        rng.number_format='¥#，##0.00'#将数据格式全部更改为¥2000.00
